@@ -12,9 +12,9 @@ var (
 	done chan bool = make(chan bool)
 )
 func single_run(run int){
-	fmt.Println("run number", run)
+	fmt.Printf("run number %d\n\n", (run + 1))
 	rl.Init()
-	fmt.Println()
+	// fmt.Println()
 	
 	for episode := 0; episode < num_episodes; episode++{
 		rl.Episode(max_steps)
