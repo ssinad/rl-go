@@ -1,7 +1,6 @@
 package rl
 
 import(
-	"math/rand"
 	"rl/env"
 	"rl/agent"
 	// "testing"
@@ -10,12 +9,12 @@ import(
 
 var(
 	// this_reward_observation [float64, []int, bool]
-	this_reward_observation env.Observation
+	// this_reward_observation env.Observation
 	last_action []int
 	total_reward float64
 	num_steps int
 	num_episodes int
-	num_state = 10
+	// num_state = 10
 )
 
 func RLGlue(){
@@ -25,7 +24,7 @@ func RLGlue(){
 	// this_reward_observation.state = local_observation
 }
 
-func Init(this_observation []int){
+func Init(){
 	env.Init()
 	agent.Init()
 	total_reward = 0.0
@@ -41,18 +40,21 @@ func Start() ([]int, []int){
 	return last_state, last_action
 }
 
-func Step(this_action int) (float64, []int, []int, bool){
-	the_reward := rand.NormFloat64()
-	observation := env.Step(last_action)
-	this_reward := observation.Reward
-	last_state := observation.State
-	terminal := observation.Is_terminal 
+func Step() (float64, []int, []int, bool){
+	this_reward, last_state, terminal := env.Step(last_action)
+	// this_reward := observation.Reward
+	// last_state := observation.State
+	// terminal := observation.Is_terminal 
 	total_reward += this_reward
 
 	if terminal{
 		num_episodes += 1
-		agent.end(this_reward)
-
+		agent.End(this_reward)
+		return this_reward, last_state, last_action, terminal
+	}else{
+		num_steps += 1
+		last_action = agent.Step(this_reward, last_state)
+		return this_reward, last_state, last_action, terminal
 	}
 }
 
@@ -66,6 +68,14 @@ func Message(inMessage string){
 
 }
 
+func Episode(max_steps_this_episode int) bool{
+	is_terminal := false
+	Start()
+	for !is_terminal && (max_steps_this_episode == 0 || num_steps < max_steps_this_episode){
+		_, _, _, is_terminal = Step()
+	}
+	return is_terminal
+}
 // func main(){
 // 	Init()
 // 	fmt.Println(last_action)

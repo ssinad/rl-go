@@ -6,21 +6,21 @@ import(
 	// "fmt"
 )
 
-type Observation struct{
-	Reward 	float64
-	State   []int
-	Is_terminal bool
+type observation struct{
+	reward 	float64
+	state   []int
+	is_terminal bool
 }
 
 var(
 	// this_reward_observation [float64, []int, bool]
-	this_reward_observation Observation
+	this_reward_observation observation
 	num_state = 10
 )
 
 func Init(){
 	local_observation := []int{}
-	this_reward_observation = Observation{0, local_observation, false}
+	this_reward_observation = observation{0, local_observation, false}
 	// this_reward_observation.reward = 0
 	// this_reward_observation.state = local_observation
 }
@@ -29,10 +29,9 @@ func Start() []int{
 	return this_reward_observation.state
 }
 
-func Step(this_action []int) Observation{
+func Step(this_action []int) (float64, []int, bool){
 	the_reward := rand.NormFloat64()
-	this_reward_observation = Observation{the_reward, this_reward_observation.state, false}
-	return this_reward_observation
+	return the_reward, this_reward_observation.state, false
 }
 
 func Cleanup(){
