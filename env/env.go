@@ -7,9 +7,9 @@ import(
 )
 
 type Observation struct{
-	reward 	float64
-	state   []int
-	is_terminal bool
+	Reward 	float64
+	State   []int
+	Is_terminal bool
 }
 
 var(
@@ -25,11 +25,11 @@ func Init(){
 	// this_reward_observation.state = local_observation
 }
 
-func Start(this_observation []int) []int{
+func Start() []int{
 	return this_reward_observation.state
 }
 
-func Step(this_action int) Observation{
+func Step(this_action []int) Observation{
 	the_reward := rand.NormFloat64()
 	this_reward_observation = Observation{the_reward, this_reward_observation.state, false}
 	return this_reward_observation

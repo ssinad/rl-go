@@ -20,11 +20,11 @@ func Init(){
 	last_action = []int{0}
 }
 
-func Start(this_observation []int) int{
+func Start(this_observation []int) []int{
 	last_action[0] = rand.Intn(num_actions)
 	local_action := []int{0}
 	local_action[0] = rand.Intn(num_actions)
-	return local_action[0]
+	return local_action
 }
 
 func Step(reward float64, this_observation []int) []int{
