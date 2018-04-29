@@ -2,26 +2,12 @@ package main
 
 import(
 	"math/rand"
-	// "testing"
-	// "fmt"
 )
-
-// type Agent struct{
-// 	value_function []float64
-// }
-
-
-
-// var(
-// 	last_action []int
-// 	num_actions = 10
-// 	Value_function = []float64{0.1, 0.2, 0.3}
-// )
 
 type SimpleAgent struct{
 	last_action []int
-	num_actions int  // 10
-	Value_function []float64  // {0.1, 0.2, 0.3}
+	num_actions int
+	Value_function []float64
 }
 
 func (agent *SimpleAgent) Init(){
@@ -51,24 +37,6 @@ func (agent SimpleAgent) Cleanup(){
 }
 
 // TODO
-func (agent SimpleAgent) Message(inMessage string){
-
+func (agent SimpleAgent) Message(inMessage string) interface{}{
+	return nil
 }
-
-// func main(){
-// 	Init()
-// 	fmt.Println(last_action)
-
-// 	tmp := Start([]int{1})
-// 	fmt.Println(last_action)
-// 	fmt.Println(tmp)
-
-// 	for i := 0; i < 10; i++ {
-// 		tmp := Step(2, []int{1})
-// 		fmt.Println(last_action)
-// 		fmt.Println(tmp)
-// 	}
-
-// 	End(3)
-// 	fmt.Println(last_action)
-// }

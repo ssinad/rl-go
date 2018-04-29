@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	// "rl/glue"
 )
 
 var (
@@ -11,6 +10,7 @@ var (
 	done         chan bool = make(chan bool)
 )
 
+// Maybe this should be moved to inside RLGlue itself
 func single_run(run int) {
 	fmt.Printf("run number %d\n\n", (run + 1))
 	rl := RLGlue{agent: &SimpleAgent{}, env: &SimpleEnvironment{}}

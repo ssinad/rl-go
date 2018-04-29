@@ -1,19 +1,12 @@
 package main
 
-import(
-	// "rl/env"
-	// "rl/agent"
-	// "testing"
-	// "fmt"
-)
-
 type Agent interface {
 	Init()
 	Start([]int) []int
 	Step(float64, []int) []int
 	End(float64)
 	Cleanup()
-	Message(string)
+	Message(string) interface{}
 }
 
 type Environment interface{
@@ -21,7 +14,7 @@ type Environment interface{
 	Start() []int
 	Step([]int) (float64, []int, bool)
 	Cleanup()
-	Message(string)
+	Message(string) interface{}
 }
 
 type RLGlue struct{
@@ -52,9 +45,6 @@ func (rl *RLGlue) Start() ([]int, []int){
 
 func (rl *RLGlue) Step() (float64, []int, []int, bool){
 	this_reward, last_state, terminal := rl.env.Step(rl.last_action)
-	// this_reward := observation.Reward
-	// last_state := observation.State
-	// terminal := observation.Is_terminal 
 	rl.total_reward += this_reward
 
 	if terminal{
@@ -74,8 +64,8 @@ func (rl *RLGlue) Cleanup(){
 }
 
 // TODO
-func (rl *RLGlue) Message(inMessage string){
-
+func (rl *RLGlue) Message(inMessage string) interface{}{
+	return nil
 }
 
 func (rl *RLGlue) Episode(max_steps_this_episode int) bool{
