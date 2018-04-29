@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	"rl/glue"
+	// "rl/glue"
 )
-
-// const max_steps = 10000
 
 var (
 	num_episodes           = 8000
@@ -15,8 +13,8 @@ var (
 
 func single_run(run int) {
 	fmt.Printf("run number %d\n\n", (run + 1))
+	rl := RLGlue{agent: &SimpleAgent{}, env: &SimpleEnvironment{}}
 	rl.Init()
-	// fmt.Println()
 
 	for episode := 0; episode < num_episodes; episode++ {
 		rl.Episode(max_steps)
