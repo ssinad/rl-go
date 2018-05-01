@@ -37,3 +37,7 @@ func (env *SimpleEnvironment) Cleanup(){
 func (env *SimpleEnvironment) Message(inMessage string) interface{}{
 	return nil
 }
+
+func NewSimpleEnvironment() *SimpleEnvironment{
+	return &SimpleEnvironment{}
+}

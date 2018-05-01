@@ -40,3 +40,7 @@ func (agent SimpleAgent) Cleanup(){
 func (agent SimpleAgent) Message(inMessage string) interface{}{
 	return nil
 }
+
+func NewSimpleAgent() *SimpleAgent{
+	return &SimpleAgent{}
+}

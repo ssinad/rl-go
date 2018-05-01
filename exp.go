@@ -13,7 +13,8 @@ var (
 // Maybe this should be moved to inside RLGlue itself
 func single_run(run int) {
 	fmt.Printf("run number %d\n\n", (run + 1))
-	rl := RLGlue{agent: &SimpleAgent{}, env: &SimpleEnvironment{}}
+	// rl := RLGlue{agent: &SimpleAgent{}, env: &SimpleEnvironment{}}
+	rl := NewRLGlue(NewSimpleAgent(), NewSimpleEnvironment())
 	rl.Init()
 
 	for episode := 0; episode < num_episodes; episode++ {
