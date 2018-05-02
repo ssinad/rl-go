@@ -13,7 +13,7 @@ type Agent interface {
 	Message(string) interface{}
 }
 
-type Environment interface{
+type Environment interface {
 	Init()
 	Start() []int
 	Step([]int) (float64, []int, bool)
@@ -21,18 +21,18 @@ type Environment interface{
 	Message(string) interface{}
 }
 
-type RLGlue struct{
-	env Environment
-	agent Agent
-	total_reward float64
-	num_steps int
-	num_episodes int
-	last_state []int
-	last_action []int
-	is_terminal bool
+type RLGlue struct {
+	env         Environment
+	agent       Agent
+	totalReward float64
+	numSteps    int
+	numEpisodes int
+	lastState   []int
+	lastAction  []int
+	isTerminal  bool
 }
 
-func array_copy(arr []int) []int{
+func array_copy(arr []int) []int {
 	cpy := make([]int, len(arr))
 	copy(cpy, arr)
 	return cpy
@@ -44,72 +44,72 @@ func array_copy(arr []int) []int{
 // 	return cpy
 // }
 
-func (rl *RLGlue) Init(){
+func (rl *RLGlue) Init() {
 	rl.env.Init()
 	rl.agent.Init()
-	rl.total_reward = 0.0
-	rl.num_steps = 0
-	rl.num_episodes = 0
-	rl.is_terminal = false
+	rl.totalReward = 0.0
+	rl.numSteps = 0
+	rl.numEpisodes = 0
+	rl.isTerminal = false
 }
 
-func (rl *RLGlue) Start() ([]int, []int){
-	rl.total_reward = 0.0
-	rl.is_terminal = false
-	rl.num_steps = 1
-	rl.last_state = rl.env.Start()
-	rl.last_action = rl.agent.Start(rl.last_state)
-	return array_copy(rl.last_state), array_copy(rl.last_action)
+func (rl *RLGlue) Start() ([]int, []int) {
+	rl.totalReward = 0.0
+	rl.isTerminal = false
+	rl.numSteps = 1
+	rl.lastState = rl.env.Start()
+	rl.lastAction = rl.agent.Start(rl.lastState)
+	return array_copy(rl.lastState), array_copy(rl.lastAction)
 }
 
-func (rl *RLGlue) Step() (float64, []int, []int, bool){
-	this_reward, last_state, terminal := rl.env.Step(rl.last_action)
-	rl.total_reward += this_reward
-	rl.last_state, rl.is_terminal = array_copy(last_state), terminal
+func (rl *RLGlue) Step() (float64, []int, []int, bool) {
+	thisReward, lastState, terminal := rl.env.Step(rl.lastAction)
+	rl.totalReward += thisReward
+	rl.lastState, rl.isTerminal = array_copy(lastState), terminal
 
-	if terminal{
-		rl.num_episodes += 1
-		rl.agent.End(this_reward)
-		return this_reward, array_copy(rl.last_state), array_copy(rl.last_action), rl.is_terminal
-	}else{
-		rl.num_steps += 1
-		rl.last_action = rl.agent.Step(this_reward, last_state)
-		return this_reward, array_copy(rl.last_state), array_copy(rl.last_action), rl.is_terminal
+	if terminal {
+		rl.numEpisodes++
+		rl.agent.End(thisReward)
+
+	} else {
+		rl.numSteps++
+		rl.lastAction = rl.agent.Step(thisReward, lastState)
 	}
+	return thisReward, array_copy(rl.lastState), array_copy(rl.lastAction), rl.isTerminal
 }
 
-func (rl *RLGlue) Cleanup(){
+func (rl *RLGlue) Cleanup() {
 	rl.env.Cleanup()
 	rl.agent.Cleanup()
 }
 
 // TODO
-func (rl *RLGlue) Message(inMessage string) interface{}{
+func (rl *RLGlue) Message(inMessage string) interface{} {
 	return nil
 }
 
-func (rl *RLGlue) Episode(max_steps_this_episode int) bool{
+func (rl *RLGlue) Episode(maxStepsThisEpisode int) bool {
 	// is_terminal := false
 	rl.Start()
-	for !rl.is_terminal && (max_steps_this_episode == 0 || rl.num_steps < max_steps_this_episode){
+	for !rl.isTerminal && (maxStepsThisEpisode == 0 || rl.numSteps < maxStepsThisEpisode) {
 		// _, _, _, is_terminal = rl.Step()
 		rl.Step()
 	}
-	return rl.is_terminal
+	return rl.isTerminal
 }
 
-func (rl *RLGlue) Return() float64{
-	return rl.total_reward
+func (rl *RLGlue) Return() float64 {
+	return rl.totalReward
 }
 
-func (rl *RLGlue) Num_steps() int{
-	return rl.num_steps
+func (rl *RLGlue) Num_steps() int {
+	return rl.numSteps
 }
 
-func (rl *RLGlue) Num_episodes() int{
-	return rl.num_episodes
+func (rl *RLGlue) Num_episodes() int {
+	return rl.numEpisodes
 }
 
-func NewRLGlue(agent Agent, env Environment) *RLGlue{
+func NewRLGlue(agent Agent, env Environment) *RLGlue {
 	return &RLGlue{agent: agent, env: env}
 }
