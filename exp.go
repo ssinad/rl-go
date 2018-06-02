@@ -13,27 +13,26 @@ var (
 // Maybe this should be moved to inside RLGlue itself
 func singleRun(run int) {
 	fmt.Printf("run number %d\n\n", (run + 1))
-	// rl := RLGlue{agent: &SimpleAgent{}, env: &SimpleEnvironment{}}
-	rl := NewRLGlue(NewSimpleAgent(), NewSimpleEnvironment())
+	numStates := 100
+	agent := NewMCAgent(numStates, 0.9, 0.5)
+	rl := NewRLGlue(agent, NewToyEnvironment(numStates))
 	rl.Init()
 
 	for episode := 0; episode < numEpisodes; episode++ {
 		rl.Episode(maxSteps)
 	}
 	rl.Cleanup()
+	fmt.Print("[ ")
+	for i := 0; i < numStates; i++ {
+		fmt.Println(agent.V.At(i, 0), ", ")
+	}
+	fmt.Println(" ]")
+
 	done <- true
 }
 
 func main() {
-
-	numRuns := 10
-	runs := make([]float64, numRuns)
-	runs[0] = 0.1
-	runs[1] = 0.2
-	runs[2] = 0.3
-	for _, value := range runs {
-		fmt.Println(value)
-	}
+	numRuns := 1
 
 	for run := 0; run < numRuns; run++ {
 		go singleRun(run)

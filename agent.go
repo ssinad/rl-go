@@ -4,6 +4,11 @@ import (
 	"math/rand"
 )
 
+type stateActionPair struct {
+	state  int
+	action int
+}
+
 type SimpleAgent struct {
 	lastAction    []int
 	numActions    int
@@ -13,11 +18,11 @@ type SimpleAgent struct {
 func (agent *SimpleAgent) Init() {
 	agent.numActions = 10
 	agent.ValueFunction = []float64{0.1, 0.2, 0.3}
-	agent.lastAction = []int{}
+	// agent.lastAction = []int{}
 }
 
 func (agent *SimpleAgent) Start(this_observation []int) []int {
-	agent.lastAction[0] = rand.Intn(agent.numActions)
+	// agent.lastAction[0] = rand.Intn(agent.numActions)
 	localAction := []int{0}
 	localAction[0] = rand.Intn(agent.numActions)
 	return localAction
