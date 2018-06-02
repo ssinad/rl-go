@@ -35,7 +35,7 @@ type RLGlue struct {
 	isTerminal  bool
 }
 
-func array_copy(arr []int) []int {
+func arrayCopy(arr []int) []int {
 	cpy := make([]int, len(arr))
 	copy(cpy, arr)
 	return cpy
@@ -62,13 +62,13 @@ func (rl *RLGlue) Start() ([]int, []int) {
 	rl.numSteps = 1
 	rl.lastState = rl.env.Start()
 	rl.lastAction = rl.agent.Start(rl.lastState)
-	return array_copy(rl.lastState), array_copy(rl.lastAction)
+	return arrayCopy(rl.lastState), arrayCopy(rl.lastAction)
 }
 
 func (rl *RLGlue) Step() (float64, []int, []int, bool) {
 	thisReward, lastState, terminal := rl.env.Step(rl.lastAction)
 	rl.totalReward += thisReward
-	rl.lastState, rl.isTerminal = array_copy(lastState), terminal
+	rl.lastState, rl.isTerminal = arrayCopy(lastState), terminal
 
 	if terminal {
 		rl.numEpisodes++
@@ -78,7 +78,7 @@ func (rl *RLGlue) Step() (float64, []int, []int, bool) {
 		rl.numSteps++
 		rl.lastAction = rl.agent.Step(thisReward, lastState)
 	}
-	return thisReward, array_copy(rl.lastState), array_copy(rl.lastAction), rl.isTerminal
+	return thisReward, arrayCopy(rl.lastState), arrayCopy(rl.lastAction), rl.isTerminal
 }
 
 func (rl *RLGlue) Cleanup() {
@@ -105,11 +105,11 @@ func (rl *RLGlue) Return() float64 {
 	return rl.totalReward
 }
 
-func (rl *RLGlue) Num_steps() int {
+func (rl *RLGlue) NumSteps() int {
 	return rl.numSteps
 }
 
-func (rl *RLGlue) Num_episodes() int {
+func (rl *RLGlue) NumEpisodes() int {
 	return rl.numEpisodes
 }
 
